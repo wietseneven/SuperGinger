@@ -1,0 +1,44 @@
+{
+  "name": "wnrt-ct-gamejam",
+  "version": "1.0.0",
+  "description": "A game from the Avans Creative Technologies Gamejam",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wietseneven/Avans-Gamejam.git"
+  },
+  "keywords": [
+    "es6",
+    "game"
+  ],
+  "author": "Wietse Neven & Roelof Tijdens",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wietseneven/Avans-Gamejam/issues"
+  },
+  "homepage": "https://github.com/wietseneven/Avans-Gamejam#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "node-sass-middleware": "^0.9.8",
+    "path": "^0.12.7",
+    "pug": "^2.0.0-beta6"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.16.0",
+    "babelify": "^7.3.0",
+    "browser-sync": "^2.17.0",
+    "browserify": "^13.1.0",
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-sass": "^2.3.2",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^2.0.0",
+    "normalize-scss": "^5.0.3",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
