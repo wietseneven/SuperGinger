@@ -19,12 +19,17 @@ class SuperGinger {
 
     // setup default scene with camera and lighting
     this.scene = new Scene();
-    this.camera = new Camera();
+    this.camera = new Camera(this.scene);
     this.terrain = new Terrain(this.scene);
 
-    // setup renderer
-    this.render = new Render(this.container, this.scene, this.camera);
+    const updatables = [
+      this.camera
+    ];
 
+    // setup renderer
+    this.render = new Render(this.container, this.scene, this.camera.camera, updatables);
+
+    // watch for resizes, to keep screen filled
     window.addEventListener('resize', this.onWindowResize, false);
   }
 

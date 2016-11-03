@@ -3,8 +3,9 @@ const THREE = THREELib();
 
 class Render {
 
-  constructor(container, scene, camera) {
+  constructor(container, scene, camera, updateables) {
     this.container = container;
+    this.updateables = updateables;
 
     // this.mouse = new THREE.Vector2();
     this.theta = 0;
@@ -27,14 +28,10 @@ class Render {
     // this.onDocumentMouseMove = this.onDocumentMouseMove.bind(this);
   }
   render() {
-    var radius = 100;
-    this.theta += 0.5;
-    this._camera.position.x = radius * Math.sin(THREE.Math.degToRad(this.theta));
-    this._camera.position.y = radius * Math.sin(THREE.Math.degToRad(this.theta));
-    this._camera.position.z = radius * Math.cos(THREE.Math.degToRad(this.theta));
-    this._camera.lookAt(this._scene.position);
 
-    this._camera.updateMatrixWorld();
+    for (let updateable of this.updateables) {
+      updateable.update();
+    }
 
     // find intersections
     // this.raycaster.setFromCamera(this.mouse, this._camera);
