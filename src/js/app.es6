@@ -4,6 +4,7 @@ const THREE = THREELib();
 import Scene from "./scene.es6";
 import Camera from "./camera.es6";
 import Terrain from "./terrain.es6";
+import Player from "./player.es6";
 
 import Render from "./render.es6";
 
@@ -19,11 +20,14 @@ class SuperGinger {
 
     // setup default scene with camera and lighting
     this.scene = new Scene();
-    this.camera = new Camera(this.scene);
     this.terrain = new Terrain(this.scene);
+    this.player = new Player(this.scene);
+
+    this.camera = new Camera(this.scene, this.player.playerObject());
 
     const updatables = [
-      this.camera
+      this.camera,
+      this.player
     ];
 
     // setup renderer
@@ -34,9 +38,9 @@ class SuperGinger {
   }
 
   onWindowResize() {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.camera.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.camera.updateProjectionMatrix();
+    this.render.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
   animate() {

@@ -5,7 +5,7 @@ class terrain {
 
   constructor(scene) {
     var geometry = new THREE.BoxBufferGeometry(300, 20, 20);
-    var object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff}));
+    var object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: 0x61e32e}));
     object.position.x = 0;
     object.position.y = 0;
     scene.add(object);
