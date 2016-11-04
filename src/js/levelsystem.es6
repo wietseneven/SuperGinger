@@ -14,10 +14,16 @@ class LevelSystem {
   newLevel() {
     this.level++;
     this.player = this._player;
+    this._terrain._clearMap();
+
     this._api.get("level", this.level, (level) => {
-      this._terrain.createLevel(level.map);
-      this._player.create(level.winningPoint);
-      this.playing = true;
+      if (!level.error) {
+        this._terrain.createLevel(level.map);
+        this._player.create(level.winningPoint);
+        this.playing = true;
+      } else {
+        this.playing = false;
+      }
     });
   }
 

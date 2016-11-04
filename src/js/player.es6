@@ -22,7 +22,7 @@ class Player {
 
     this.winningPoint = {
       x: winningPoint.x * 20,
-      y: winningPoint.y * 5,
+      y: winningPoint.y * 10,
       z: winningPoint.z * 20
     };
 
@@ -112,7 +112,7 @@ class Player {
   }
 
   _won() {
-    // console.log('You did it!');
+    this._scene.remove(this.player);
   }
 
   update() {

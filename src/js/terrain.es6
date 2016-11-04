@@ -11,7 +11,7 @@ class Terrain {
     this.height = 5;
 
     this.map = [];
-
+    this.objects = [];
   }
 
   createLevel(levelData) {
@@ -25,12 +25,14 @@ class Terrain {
     const Physijs = this._Physijs;
 
     // Loader
-    const groundMaterial = new THREE.MeshPhongMaterial({
-      color: 0x333333,
-      shininess: 40,
-      emissive: 0x111111,
-      specular: 0xeeeeee
-    });
+    const groundMaterial = Physijs.createMaterial(
+      new THREE.MeshPhongMaterial({
+        color: 0x333333,
+        shininess: 40,
+        emissive: 0x111111,
+        specular: 0xeeeeee
+      })
+    );
     const winningMaterial = Physijs.createMaterial(
       new THREE.MeshLambertMaterial({color: 0x1fcf16})
     );
@@ -68,6 +70,7 @@ class Terrain {
             part.receiveShadow = true;
             part.castShadow = true;
 
+            this.objects.push(part);
             scene.add(part);
           }
           x += this.width;
@@ -78,6 +81,17 @@ class Terrain {
       y += this.height * 2;
       z = 0;
     }
+  }
+
+  _clearMap() {
+    const scene = this._scene;
+
+    if (this.objects.length > 1) {
+      for (let object of this.objects) {
+        scene.remove(object);
+      }
+    }
+    this.objects = [];
   }
 
   get terrainObject() {
