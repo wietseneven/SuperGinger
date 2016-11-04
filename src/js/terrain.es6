@@ -10,25 +10,13 @@ class Terrain {
     this.width = 20;
     this.height = 5;
 
-    this._drawMap();
+    this.map = [];
 
   }
 
-  _map() {
-    return [
-      [
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [9, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-      ],
-      [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      ]
-    ];
+  createLevel(levelData) {
+    this.map = levelData;
+    this._drawMap();
   }
 
   _drawMap() {
@@ -51,7 +39,7 @@ class Terrain {
     const blockGeometry = new THREE.BoxBufferGeometry(this.width, this.height, this.width);
 
     // loop through grounds
-    for (let layer of this._map()) {
+    for (let layer of this.map) {
       // loop through floors
       for (let row of layer) {
         // loop through rooms

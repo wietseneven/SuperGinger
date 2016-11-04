@@ -13,6 +13,9 @@ import Player from "./player.es6";
 
 import Render from "./render.es6";
 
+import Api from "./api.es6";
+import LevelSystem from "./levelsystem.es6";
+
 class SuperGinger {
   constructor() {
     this.onWindowResize = this.onWindowResize.bind(this);
@@ -27,13 +30,17 @@ class SuperGinger {
     this.scene = new Scene(THREE, Physijs);
     this.terrain = new Terrain(THREE, Physijs, this.scene);
     this.skydome = new Skydome(THREE, this.scene);
-    this.player = new Player(THREE, Physijs, this.scene, this.terrain.winningPoint);
-    this.camera = new Camera(this.scene, this.player.playerObject);
+    this.camera = new Camera(this.scene);
+    this.player = new Player(THREE, Physijs, this.scene, this.camera.camera);
+
+    this.api = new Api();
+    this.levelSystem = new LevelSystem(this.api, this.player, this.terrain);
 
     // the updatables are the components that should run an update
     const updatables = [
       this.camera,
-      this.player
+      this.player,
+      this.levelSystem
     ];
 
     // setup renderer
@@ -41,6 +48,8 @@ class SuperGinger {
 
     // watch for resizes, to keep screen filled
     window.addEventListener('resize', this.onWindowResize, false);
+
+    this.levelSystem.newLevel();
   }
 
   onWindowResize() {
