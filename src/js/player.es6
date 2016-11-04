@@ -5,7 +5,13 @@ class Player {
 
     var geometry = new THREE.SphereBufferGeometry(6, 32, 32);
     var material = Physijs.createMaterial(
-      new THREE.MeshLambertMaterial({ color: 0xff0000 }),
+      new THREE.MeshPhongMaterial({
+        color: 0xff0000,
+        shininess: 100.0,
+        emissive: 0x111111,
+        specular: 0xbbbbbb
+      }),
+      // new THREE.MeshLambertMaterial({ color: 0xff0000 }),
       9.9,
       1.5
     );
@@ -13,7 +19,7 @@ class Player {
       geometry,
       material,
       1000);
-    this.player.receiveShadow = true;
+    // this.player.receiveShadow = true;
     this.player.castShadow = true;
     this.player.position.y = 40;
 

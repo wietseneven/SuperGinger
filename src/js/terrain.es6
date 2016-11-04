@@ -37,17 +37,12 @@ class Terrain {
     const Physijs = this._Physijs;
 
     // Loader
-    const textureLoader = new THREE.TextureLoader();
-
-    // Materials
-    const groundMaterial = Physijs.createMaterial(
-      new THREE.MeshLambertMaterial({map: textureLoader.load('images/rocks.jpg')}),
-      .8, // high friction
-      .4 // low restitution
-    );
-    groundMaterial.map.wrapS = groundMaterial.map.wrapT = THREE.RepeatWrapping;
-    groundMaterial.map.repeat.set(2.5, 2.5);
-
+    const groundMaterial = new THREE.MeshPhongMaterial({
+      color: 0x333333,
+      shininess: 40,
+      emissive: 0x111111,
+      specular: 0xeeeeee
+    });
     const winningMaterial = Physijs.createMaterial(
       new THREE.MeshLambertMaterial({color: 0x1fcf16})
     );
