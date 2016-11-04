@@ -1,12 +1,22 @@
-import THREELib from "three-js";
-const THREE = THREELib();
-
 class Player {
-  constructor(scene) {
-    var geometry = new THREE.SphereBufferGeometry(5, 32, 32);
-    var material = new THREE.MeshBasicMaterial({color: 0xC00D0D});
-    this.player = new THREE.Mesh(geometry, material);
-    this.player.position.y = 20;
+  constructor(THREE, Physijs, scene, winningPoint) {
+    this._THREE = THREE;
+    this.winningPoint = winningPoint;
+
+    var geometry = new THREE.SphereBufferGeometry(6, 32, 32);
+    var material = Physijs.createMaterial(
+      new THREE.MeshLambertMaterial({ color: 0xff0000 }),
+      9.9,
+      1.5
+    );
+    this.player = new Physijs.SphereMesh(
+      geometry,
+      material,
+      1000);
+    this.player.receiveShadow = true;
+    this.player.castShadow = true;
+    this.player.position.y = 40;
+
     scene.add(this.player);
     // scene.add(object);
 
@@ -14,7 +24,8 @@ class Player {
       up: false,
       down: false,
       left: false,
-      right: false
+      right: false,
+      space: false
     };
 
     this.watchKeys();
@@ -26,6 +37,7 @@ class Player {
       if (e.which == 40) this.keys.down = true;
       if (e.which == 37) this.keys.left = true;
       if (e.which == 39) this.keys.right = true;
+      if (e.which == 32) this.keys.space = true;
     });
 
     window.onkeyup = ((e) => {
@@ -33,6 +45,7 @@ class Player {
       if (e.which == 40) this.keys.down = false;
       if (e.which == 37) this.keys.left = false;
       if (e.which == 39) this.keys.right = false;
+      if (e.which == 32) this.keys.space = false;
     });
   }
 
@@ -40,22 +53,55 @@ class Player {
     return this.player;
   }
 
+  _doMove() {
+    const k = this.keys,
+          speed = 50;
+
+    let xVel = 0, yVel = -40, zVel = 0;
+
+    if (k.right) xVel = speed;
+    if (k.left) xVel = -speed;
+    if (k.up) zVel = -speed;
+    if (k.down) zVel = speed;
+    if (k.space) yVel = speed;
+
+    this.player.setLinearVelocity({z: zVel, y: yVel, x: xVel });
+  }
+
+  _checkWin() {
+    const p = this.player;
+    if (p.position.x > this.winningPoint.x - 10 &&
+      p.position.x < this.winningPoint.x + 10 &&
+      p.position.y > this.winningPoint.y - 10 &&
+      p.position.y < this.winningPoint.y + 10 &&
+      p.position.z > this.winningPoint.z - 10 &&
+      p.position.z < this.winningPoint.z + 10) {
+      return true;
+    }
+  }
+
+  _checkDead() {
+    if (this.player.position.y < 0) return true;
+  }
+
+  _die() {
+    const p = this.player;
+    p.__dirtyPosition = true;
+    p.position.x = 0;
+    p.position.y = 40;
+    p.position.z = 0;
+  }
+
+  _won() {
+    console.log('You did it!');
+  }
+
   update() {
-    if (this.keys.right) {
-      this.player.position.x++;
-    }
 
-    if (this.keys.left) {
-      this.player.position.x--;
-    }
+    this._doMove();
+    if (this._checkDead()) this._die();
+    if (this._checkWin()) this._won();
 
-    if (this.keys.up) {
-      this.player.position.y++;
-    }
-
-    if (this.keys.down) {
-      this.player.position.y--;
-    }
   }
 }
 

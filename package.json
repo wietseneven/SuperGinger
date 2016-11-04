@@ -25,7 +25,10 @@
     "express": "^4.14.0",
     "node-sass-middleware": "^0.9.8",
     "path": "^0.12.7",
+    "physijs-browserify": "0.0.2",
     "pug": "^2.0.0-beta6",
+    "three": "^0.82.1",
+    "three-collada-loader": "0.0.1",
     "three-js": "^79.0.0"
   },
   "devDependencies": {

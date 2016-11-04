@@ -1,29 +1,113 @@
-import THREELib from "three-js";
-const THREE = THREELib();
+class Terrain {
 
-class terrain {
+  constructor(THREE, Physijs, scene) {
+    this._THREE = THREE;
+    this._Physijs = Physijs;
+    this._scene = scene;
 
-  constructor(scene) {
-    var geometry = new THREE.BoxBufferGeometry(300, 20, 20);
-    var object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: 0x61e32e}));
-    object.position.x = 0;
-    object.position.y = 0;
-    scene.add(object);
+    this.win = {x:0, y: 0, z: 0};
 
-    // for (var i = 0; i < 200; i++) {
-    //   var object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff}));
-    //   object.position.x = Math.random() * 800 - 400;
-    //   object.position.y = Math.random() * 800 - 400;
-    //   object.position.z = Math.random() * 800 - 400;
-    //   object.rotation.x = Math.random() * 2 * Math.PI;
-    //   object.rotation.y = Math.random() * 2 * Math.PI;
-    //   object.rotation.z = Math.random() * 2 * Math.PI;
-    //   object.scale.x = Math.random() + 0.5;
-    //   object.scale.y = Math.random() + 0.5;
-    //   object.scale.z = Math.random() + 0.5;
-    //   scene.add(object);
-    // }
+    this.width = 20;
+    this.height = 5;
+
+    this._drawMap();
+
+  }
+
+  _map() {
+    return [
+      [
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [9, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+      ],
+      [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      ]
+    ];
+  }
+
+  _drawMap() {
+    const THREE = this._THREE;
+    const scene = this._scene;
+    const Physijs = this._Physijs;
+
+    // Loader
+    const textureLoader = new THREE.TextureLoader();
+
+    // Materials
+    const groundMaterial = Physijs.createMaterial(
+      new THREE.MeshLambertMaterial({map: textureLoader.load('images/rocks.jpg')}),
+      .8, // high friction
+      .4 // low restitution
+    );
+    groundMaterial.map.wrapS = groundMaterial.map.wrapT = THREE.RepeatWrapping;
+    groundMaterial.map.repeat.set(2.5, 2.5);
+
+    const winningMaterial = Physijs.createMaterial(
+      new THREE.MeshLambertMaterial({color: 0x1fcf16})
+    );
+
+    let x = 0, y = 0, z = 0;
+    const blockGeometry = new THREE.BoxBufferGeometry(this.width, this.height, this.width);
+
+    // loop through grounds
+    for (let layer of this._map()) {
+      // loop through floors
+      for (let row of layer) {
+        // loop through rooms
+        for (let block of row) {
+          if (block) {
+
+            // Different material for the winning block
+            let material = groundMaterial;
+            if (block == 9) {
+              material = winningMaterial;
+
+              // set win coords
+              this.win.x = x;
+              this.win.y = y;
+              this.win.z = z;
+            }
+
+            const part = new Physijs.BoxMesh(
+              blockGeometry,
+              material,
+              0);
+            part.position.x = x;
+            part.position.y = y;
+            part.position.z = z;
+
+            part.receiveShadow = true;
+            part.castShadow = true;
+
+            scene.add(part);
+          }
+          x += this.width;
+        }
+        x = 0;
+        z += this.width;
+      }
+      y += this.height * 2;
+      z = 0;
+    }
+  }
+
+  get terrainObject() {
+    return this.terrain;
+  }
+
+  get winningPoint() {
+    return {
+      x: this.win.x,
+      y: this.win.y,
+      z: this.win.z
+    }
   }
 }
 
-export default terrain;
+export default Terrain;

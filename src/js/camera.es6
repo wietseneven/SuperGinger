@@ -15,11 +15,11 @@ class Camera {
 
   update() {
     var radius = 100;
-    this.theta += 0.5;
+    // this.theta += 0.5;
 
-    this._camera.position.x = radius * Math.sin(THREE.Math.degToRad(this.theta));
+    this._camera.position.x = 100;
     this._camera.position.y = 30;
-    this._camera.position.z = radius * Math.cos(THREE.Math.degToRad(this.theta));
+    this._camera.position.z = radius * Math.cos(THREE.Math.degToRad(0));
     this._camera.lookAt(this._player.position);
 
     this._camera.updateMatrixWorld();

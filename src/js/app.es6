@@ -1,6 +1,10 @@
 import THREELib from "three-js";
 const THREE = THREELib();
 
+const Physijs = require('physijs-browserify')(THREE);
+Physijs.scripts.worker = '/libs/physijs-browserify/libs/physi-worker.js';
+Physijs.scripts.ammo = '/libs/physijs-browserify/libs/ammo.js';
+
 import Scene from "./scene.es6";
 import Camera from "./camera.es6";
 import Terrain from "./terrain.es6";
@@ -19,12 +23,12 @@ class SuperGinger {
     document.body.appendChild(this.container);
 
     // setup default scene with camera and lighting
-    this.scene = new Scene();
-    this.terrain = new Terrain(this.scene);
-    this.player = new Player(this.scene);
+    this.scene = new Scene(THREE, Physijs);
+    this.terrain = new Terrain(THREE, Physijs, this.scene);
+    this.player = new Player(THREE, Physijs, this.scene, this.terrain.winningPoint);
+    this.camera = new Camera(this.scene, this.player.playerObject);
 
-    this.camera = new Camera(this.scene, this.player.playerObject());
-
+    // the updatables are the components that should run an update
     const updatables = [
       this.camera,
       this.player
