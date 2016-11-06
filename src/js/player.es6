@@ -42,6 +42,16 @@ class Player {
       9.9,
       1.5
     );
+
+    // reset all the keys
+    this.keys = {
+      up: false,
+      down: false,
+      left: false,
+      right: false,
+      space: false
+    };
+
     this.player = new Physijs.SphereMesh(
       geometry,
       material,
@@ -117,7 +127,6 @@ class Player {
     p.position.z = 0;
 
     this.attempts++;
-    console.log(this.attempts);
   }
 
   _won() {
