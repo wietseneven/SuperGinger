@@ -1,7 +1,10 @@
 @import "../../node_modules/normalize-scss/sass/normalize/import-now";
+
 body {
-  background: #C00D0D;
+  background: #000;
+  overflow: hidden;
 }
+
 canvas {
   display: block;
 }

@@ -5,7 +5,7 @@ class Terrain {
     this._Physijs = Physijs;
     this._scene = scene;
 
-    this.win = {x:0, y: 0, z: 0};
+    this.win = {x: 0, y: 0, z: 0};
 
     this.width = 20;
     this.height = 5;
@@ -37,7 +37,7 @@ class Terrain {
       new THREE.MeshLambertMaterial({color: 0x1fcf16})
     );
 
-    let x = 0, y = 0, z = 0;
+    let x = 0, y = 0, z = 0, index = 0;
     const blockGeometry = new THREE.BoxBufferGeometry(this.width, this.height, this.width);
 
     // loop through grounds
@@ -74,6 +74,7 @@ class Terrain {
             scene.add(part);
           }
           x += this.width;
+          index++;
         }
         x = 0;
         z += this.width;

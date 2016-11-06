@@ -23,6 +23,7 @@ class LevelSystem {
         this.playing = true;
       } else {
         this.playing = false;
+        this._menu.setState('showing');
       }
     });
   }
@@ -36,6 +37,8 @@ class LevelSystem {
         this.newLevel();
       }
 
+    } else {
+      // console.log('no more levelss');
     }
   }
 }

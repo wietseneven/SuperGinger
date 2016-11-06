@@ -14,13 +14,13 @@ class Menu {
 
     this.startGame = this.startGame.bind(this);
 
+    this.create();
+
   }
 
   setState(state) {
     this.state = state;
-    if (state) {
-      this.create();
-    }
+    if (state) this._camera.lookAt(this._scene);
   }
 
   startGame() {
@@ -89,39 +89,51 @@ class Menu {
   }
 
   createButtons() {
-    var newDiv = document.createElement("div");
+    var button = document.createElement("div");
     var newContent = document.createTextNode("START");
-    newDiv.style.position = 'absolute';
-    newDiv.style.left = 0;
-    newDiv.style.right = 0;
-    newDiv.style.bottom = '100px';
-    newDiv.style.margin = 'auto';
-    newDiv.style.backgroundColor = '#FF0000';
-    newDiv.style.width = '200px';
-    newDiv.style.textAlign = 'center';
-    newDiv.style.padding = '10px';
-    newDiv.appendChild(newContent); //add the text node to the newly created div.
+    button.style.position = 'absolute';
+    button.style.left = 0;
+    button.style.right = 0;
+    button.style.bottom = '100px';
+    button.style.margin = 'auto';
+    button.style.backgroundColor = '#FF0000';
+    button.style.width = '200px';
+    button.style.textAlign = 'center';
+    button.style.padding = '10px';
+    button.style.cursor = 'pointer';
+    button.appendChild(newContent); //add the text node to the newly created div.
 
-    newDiv.addEventListener('click', this.startGame);
-    this.button = newDiv;
-    console.log('hi');
+    button.addEventListener('click', this.startGame);
+    this.button = button;
 
     // add the newly created element and its content into the DOM
-    document.body.insertBefore(newDiv, this._container);
+    document.body.insertBefore(button, this._container);
   }
 
   create() {
-    this.loadFont();
+    if (this.font) {
+      this.createText();
+      this.createButtons();
+    } else {
+      this.loadFont();
+    }
   }
 
   removeMenu() {
     const scene = this._scene;
     // this.textGroup.position.y = -1000;
-    this.button.remove();
   }
 
   update() {
     if (this.state == 'showing' && this.textGroup) {
+      if (this.textGroup.position.y > 40) {
+        let buttonBottomDistance = Number(this.button.style.bottom.replace("px", ""));
+        if (buttonBottomDistance < 100) {
+          buttonBottomDistance += 3;
+          this.button.style.bottom = buttonBottomDistance + 'px';
+        }
+        this.textGroup.position.y -= 3;
+      }
       if (this.moveDirection == 1) {
         this.textGroup.rotation.y += 0.0005;
         if (this.textGroup.rotation.y > 0.7) this.moveDirection = 0;
@@ -130,8 +142,13 @@ class Menu {
         if (this.textGroup.rotation.y < 0.5) this.moveDirection = 1;
       }
     } else {
-      if (this.textGroup.position.y > -999) {
+      if (this.textGroup.position.y < 400) {
         this.textGroup.position.y += 3;
+      }
+      let buttonBottomDistance = Number(this.button.style.bottom.replace("px", ""));
+      if (buttonBottomDistance > -50) {
+        buttonBottomDistance -= 3;
+        this.button.style.bottom = buttonBottomDistance + 'px';
       }
     }
   }

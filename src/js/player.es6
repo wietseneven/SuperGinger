@@ -13,12 +13,16 @@ class Player {
       space: false
     };
 
+    this.playing = false;
+    this.attempts = 0;
+
     this.watchKeys();
   }
 
   create(winningPoint) {
     const THREE = this._THREE;
     const Physijs = this._Physijs;
+    this.attempts = 0;
 
     this.winningPoint = {
       x: winningPoint.x * 20,
@@ -47,6 +51,8 @@ class Player {
     this.player.position.y = 40;
 
     this._scene.add(this.player);
+
+    this.playing = true;
   }
 
   watchKeys() {
@@ -109,15 +115,19 @@ class Player {
     p.position.x = 0;
     p.position.y = 40;
     p.position.z = 0;
+
+    this.attempts++;
+    console.log(this.attempts);
   }
 
   _won() {
     this._scene.remove(this.player);
+    this.playing = false;
   }
 
   update() {
 
-    if (this.player) {
+    if (this.playing) {
       if (this._checkDead()) this._die();
       if (this._checkWin()) {
         this._won();

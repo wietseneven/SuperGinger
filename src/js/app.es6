@@ -39,6 +39,7 @@ class SuperGinger {
     this.levelSystem = new LevelSystem(this.api, this.player, this.terrain);
 
     this.menu = new Menu(THREE, Physijs, this.scene, this.camera.camera, this.container, this.levelSystem);
+    this.levelSystem._menu = this.menu;
 
     // the updatables are the components that should run an update
     const updatables = [
