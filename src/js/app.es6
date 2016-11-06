@@ -36,7 +36,7 @@ class SuperGinger {
     this.player = new Player(THREE, Physijs, this.scene, this.camera.camera);
 
     this.api = new Api();
-    this.levelSystem = new LevelSystem(this.api, this.player, this.terrain);
+    this.levelSystem = new LevelSystem(this.api, this.container, this.player, this.terrain);
 
     this.menu = new Menu(THREE, Physijs, this.scene, this.camera.camera, this.container, this.levelSystem);
     this.levelSystem._menu = this.menu;
