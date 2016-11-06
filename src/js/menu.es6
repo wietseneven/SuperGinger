@@ -132,7 +132,7 @@ class Menu {
   showHighscores() {
     const api = this._api;
     api.get("getHighscores", "", (scores) => {
-      let highscores = "Highscores \n";
+      let highscores = "Highscores. The lower, the better. \n";
       for (let score of scores.highscores) {
         highscores += score.score + " by " + score.name + "\n";
       }
