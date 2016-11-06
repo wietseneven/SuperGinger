@@ -46,14 +46,21 @@ class LevelSystem {
       } else {
         this.playing = false;
         this._menu.setState('showing');
+        this.logScore();
       }
     });
   }
 
+  logScore() {
+    this._api.get("setScore", this.gameScore, (level) => {
+      console.log("logged it!");
+    })
+  }
+
   startGameTimer() {
     this.levelScore = 0;
-    if (gameTimer) clearInterval(gameTimer);
-    const gameTimer = setInterval(() => {
+    if (this.gameTimer) clearInterval(this.gameTimer);
+    this.gameTimer = setInterval(() => {
       this.levelScore++;
     }, 1000);
   }

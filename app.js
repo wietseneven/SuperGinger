@@ -15,7 +15,7 @@ app.get('/', function (req, res) {
   res.render('index', { title: 'Super Ginger', message: 'Hello there!'});
 });
 
-app.get('/levels/:level', function (req, res) {
+app.post('/levels/:level', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
 
   const level = req.params.level;
@@ -26,6 +26,15 @@ app.get('/levels/:level', function (req, res) {
   } catch (e) {
     res.send(JSON.stringify({ name: "This level doesn't exist (yet).", error: true }, null, 3));
   }
+});
+
+app.post('/setScore/:score', function(req, res) {
+  var obj = JSON.parse(fs.readFileSync('src/db/highscores.json', 'utf8'));
+  obj.highscores.push({score: req.params.score});
+  fs.writeFile('src/db/highscores.json', JSON.stringify(obj), function (err) {
+    console.log(err);
+  });
+
 });
 
 app.listen(7933, function () {

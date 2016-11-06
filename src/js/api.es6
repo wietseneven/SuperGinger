@@ -1,7 +1,8 @@
 class Api {
   constructor() {
     this.endpoints = {
-      "level": "/levels/"
+      "level": "/levels/",
+      "setScore": "/setScore/"
     };
   }
 
@@ -13,7 +14,7 @@ class Api {
         if (callback) callback(result);
       }
     };
-    xhttp.open("GET", this.endpoints[endpoint] + param, true);
+    xhttp.open("POST", this.endpoints[endpoint] + param, true);
     xhttp.send();
   }
 }
