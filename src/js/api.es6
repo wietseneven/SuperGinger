@@ -2,7 +2,8 @@ class Api {
   constructor() {
     this.endpoints = {
       "level": "/levels/",
-      "setScore": "/setScore/"
+      "setScore": "/setScore/",
+      "getHighscores": "/getHighscores"
     };
   }
 

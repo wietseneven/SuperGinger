@@ -1,8 +1,9 @@
 class Menu {
-  constructor(THREE, Physijs, scene, camera, container, levelsystem) {
+  constructor(THREE, Physijs, scene, api, camera, container, levelsystem) {
     this._THREE = THREE;
     this._Physijs = Physijs;
     this._scene = scene;
+    this._api = api;
     this._camera = camera;
     this._levelSystem = levelsystem;
     this._container = container;
@@ -13,6 +14,7 @@ class Menu {
     this.moveDirection = 1;
 
     this.startGame = this.startGame.bind(this);
+    this.showHighscores = this.showHighscores.bind(this);
 
     this.create();
 
@@ -90,10 +92,9 @@ class Menu {
 
   createButtons() {
     var button = document.createElement("div");
-    var newContent = document.createTextNode("START");
     button.style.position = 'absolute';
-    button.style.left = 0;
-    button.style.right = 0;
+    button.style.left = '-275px';
+    button.style.right = '0';
     button.style.bottom = '100px';
     button.style.margin = 'auto';
     button.style.backgroundColor = '#FF0000';
@@ -101,13 +102,41 @@ class Menu {
     button.style.textAlign = 'center';
     button.style.padding = '10px';
     button.style.cursor = 'pointer';
-    button.appendChild(newContent); //add the text node to the newly created div.
+    button.innerHTML = 'START' //add the text node to the newly created div.
 
     button.addEventListener('click', this.startGame);
     this.button = button;
 
+    var highscoreButton = document.createElement("div");
+    highscoreButton.style.position = 'absolute';
+    highscoreButton.style.left = '0';
+    highscoreButton.style.right = '-275px';
+    highscoreButton.style.bottom = '100px';
+    highscoreButton.style.margin = 'auto';
+    highscoreButton.style.backgroundColor = '#FF0000';
+    highscoreButton.style.width = '200px';
+    highscoreButton.style.textAlign = 'center';
+    highscoreButton.style.padding = '10px';
+    highscoreButton.style.cursor = 'pointer';
+    highscoreButton.innerHTML = 'GET HIGHSCORES';
+
+    highscoreButton.addEventListener('click', this.showHighscores);
+    this.highscoreButtutton = highscoreButton;
+
     // add the newly created element and its content into the DOM
     document.body.insertBefore(button, this._container);
+    document.body.insertBefore(highscoreButton, this._container);
+  }
+
+  showHighscores() {
+    const api = this._api;
+    api.get("getHighscores", "", (scores) => {
+      let highscores = "Highscores \n";
+      for (let score of scores.highscores) {
+        highscores += score.score + " by " + score.name + "\n";
+      }
+      alert(highscores);
+    });
   }
 
   create() {
@@ -131,6 +160,7 @@ class Menu {
         if (buttonBottomDistance < 100) {
           buttonBottomDistance += 3;
           this.button.style.bottom = buttonBottomDistance + 'px';
+          this.highscoreButtutton.style.bottom = buttonBottomDistance + 'px';
         }
         this.textGroup.position.y -= 3;
       }
@@ -149,6 +179,7 @@ class Menu {
       if (buttonBottomDistance > -50) {
         buttonBottomDistance -= 3;
         this.button.style.bottom = buttonBottomDistance + 'px';
+        this.highscoreButtutton.style.bottom = buttonBottomDistance + 'px';
       }
     }
   }

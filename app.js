@@ -30,11 +30,15 @@ app.post('/levels/:level', function (req, res) {
 
 app.post('/setScore/:score', function(req, res) {
   var obj = JSON.parse(fs.readFileSync('src/db/highscores.json', 'utf8'));
-  obj.highscores.push({score: req.params.score});
+  obj.highscores.push(JSON.parse(req.params.score));
   fs.writeFile('src/db/highscores.json', JSON.stringify(obj), function (err) {
     console.log(err);
   });
+});
 
+app.post('/getHighscores', function(req, res) {
+  const highscores = fs.readFileSync('src/db/highscores.json', 'utf8');
+  res.send(highscores);
 });
 
 app.listen(7933, function () {

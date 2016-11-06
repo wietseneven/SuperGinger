@@ -52,7 +52,8 @@ class LevelSystem {
   }
 
   logScore() {
-    this._api.get("setScore", this.gameScore, (level) => {
+    const userName = prompt("What is your name?");
+    this._api.get("setScore", JSON.stringify({score: this.gameScore, name: userName}), (level) => {
       console.log("logged it!");
     })
   }
@@ -66,7 +67,6 @@ class LevelSystem {
   }
 
   update() {
-    console.log(this.gameScore);
     if (this.playing) {
 
       this.scoreInfoBox.innerHTML = this.gameScore + this.levelScore;
