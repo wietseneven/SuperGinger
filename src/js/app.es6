@@ -7,6 +7,7 @@ Physijs.scripts.ammo = '/libs/physijs-browserify/libs/ammo.js';
 
 import Scene from "./scene.es6";
 import Camera from "./camera.es6";
+import Menu from "./menu.es6";
 import Terrain from "./terrain.es6";
 import Skydome from "./skydome.es6";
 import Player from "./player.es6";
@@ -24,6 +25,7 @@ class SuperGinger {
 
   init() {
     this.container = document.createElement('div');
+    this.container.id = 'SuperGinger';
     document.body.appendChild(this.container);
 
     // setup default scene with camera and lighting
@@ -36,8 +38,11 @@ class SuperGinger {
     this.api = new Api();
     this.levelSystem = new LevelSystem(this.api, this.player, this.terrain);
 
+    this.menu = new Menu(THREE, Physijs, this.scene, this.camera.camera, this.container, this.levelSystem);
+
     // the updatables are the components that should run an update
     const updatables = [
+      this.menu,
       this.camera,
       this.player,
       this.levelSystem
@@ -49,7 +54,7 @@ class SuperGinger {
     // watch for resizes, to keep screen filled
     window.addEventListener('resize', this.onWindowResize, false);
 
-    this.levelSystem.newLevel();
+    this.menu.setState('showing');
   }
 
   onWindowResize() {
