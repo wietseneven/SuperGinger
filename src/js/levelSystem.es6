@@ -29,6 +29,12 @@ class LevelSystem {
     document.body.insertBefore(this.scoreInfoBox, this._container);
   }
 
+  reset() {
+    this.level = 0;
+    this.gameScore = 0;
+    this.levelScore = 0;
+  }
+
   newLevel() {
     this.level++;
     this.player = this._player;

@@ -29,6 +29,7 @@ class Menu {
     this.removeMenu();
     this.setState(0);
     setTimeout(() => {
+      this._levelSystem.reset();
       this._levelSystem.newLevel();
     }, 1000);
   }
