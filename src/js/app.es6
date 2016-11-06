@@ -1,10 +1,12 @@
 import THREELib from "three-js";
 const THREE = THREELib();
 
+// Setup Physics
 const Physijs = require('physijs-browserify')(THREE);
 Physijs.scripts.worker = '/libs/physijs-browserify/libs/physi-worker.js';
 Physijs.scripts.ammo = '/libs/physijs-browserify/libs/ammo.js';
 
+// Import all needed components
 import Scene from "./scene.es6";
 import Camera from "./camera.es6";
 import Menu from "./menu.es6";
@@ -19,13 +21,18 @@ import LevelSystem from "./levelsystem.es6";
 
 class SuperGinger {
   constructor() {
+    // create responsive reactions
     this.onWindowResize = this.onWindowResize.bind(this);
+
+    // Bind the object to animate
     this.animate = this.animate.bind(this);
   }
 
   init() {
+    // Create base div to append game canvas
     this.container = document.createElement('div');
     this.container.id = 'SuperGinger';
+    // Set the game container in the html body
     document.body.appendChild(this.container);
 
     // setup default scene with camera and lighting
@@ -41,7 +48,7 @@ class SuperGinger {
     this.menu = new Menu(THREE, Physijs, this.scene, this.api, this.camera.camera, this.container, this.levelSystem);
     this.levelSystem._menu = this.menu;
 
-    // the updatables are the components that should run an update
+    // the updatables are the components that should run an update, on every itteration
     const updatables = [
       this.menu,
       this.camera,
@@ -59,6 +66,7 @@ class SuperGinger {
   }
 
   onWindowResize() {
+    // responsive utilities
     this.camera.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.camera.updateProjectionMatrix();
     this.render.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -72,6 +80,9 @@ class SuperGinger {
 
 document.addEventListener("DOMContentLoaded", function () {
   let superGinger = new SuperGinger();
+  // setup the game
   superGinger.init();
+
+  // run the itterations
   superGinger.animate();
 });
