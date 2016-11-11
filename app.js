@@ -8,6 +8,8 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/libs', express.static(__dirname + '/node_modules'));
 
+
+
 // Use pug/jade as the render view engine
 app.set('view engine', 'pug');
 
